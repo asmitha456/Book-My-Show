@@ -67,7 +67,7 @@ pipeline {
 
         stage('OWASP FS Scan') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
@@ -81,7 +81,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                    withDockerRegistry(credentialsId: 'docker-creds', toolName: 'docker') {
                         sh ''' 
                         echo "Building Docker image..."
                         docker build --no-cache -t $DOCKER_IMAGE -f bookmyshow-app/Dockerfile bookmyshow-app
